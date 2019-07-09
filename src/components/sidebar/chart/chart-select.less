@@ -1,0 +1,49 @@
+.chart-select {
+  .title {
+    font-size: 14px;
+    background: #eeeeee;
+    padding: 4px;
+  }
+
+  .chart-list {
+    margin-top: 6px;
+    height: 160px;
+    text-align: center;
+    .chart {
+      display: inline-block;
+      font-size: 14px;
+      padding: 4px;
+      box-sizing: border-box;
+      &:hover {
+        border: 1px solid #eeeeee;
+        padding: 3px;
+      }
+      .icon {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        vertical-align: middle;
+      }
+      &.line .icon{
+        background: url("../../../assets/icons/line_chart.png");
+        background-repeat: no-repeat;
+        background-size: 40px;
+      }
+      &.bar .icon{
+        background: url("../../../assets/icons/bar_chart.png");
+        background-repeat: no-repeat;
+        background-size: 40px;
+      }
+      &.pie .icon{
+        background: url("../../../assets/icons/pie_chart.png");
+        background-repeat: no-repeat;
+        background-size: 40px;
+      }
+      &.area-chart .icon {
+        background: url("../../../assets/icons/area_chart.png");
+        background-repeat: no-repeat;
+        background-size: 40px;
+      }
+    }
+  }
+}
