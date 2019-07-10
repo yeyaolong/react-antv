@@ -47,7 +47,20 @@ module.exports = {
                     {
                         loader: 'url-loader',
                         options: {
-                            limit: 8192
+                            limit: 8192,
+                            /**
+                             *  打包路经
+                             *  默认直接打包到dist目录下，
+                             *  这种写法name: '[name].[hash:7].[ext]'也是直接打包到dist目录下
+                             */
+                            name: '[name].[hash:7].[ext]',
+                            /**
+                             *  浏览器请求的路径会变成
+                             *  background: url("${publicPath}/${name}")
+                             *  如果不填publicPath，那么就会变成
+                             *  background: url("${name}")
+                             */
+                            publicPath: '/'
                         }
                     }
                 ]
@@ -64,10 +77,6 @@ module.exports = {
             filename: 'public/view/index.html',
             template: 'public/view/index.html',
             chunk: 'app'
-        }),
-        new webpack.ProvidePlugin({
-            jQuery: 'jquery',
-            $: 'jquery'
         })
     ]
 }
