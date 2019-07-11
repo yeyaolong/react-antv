@@ -1,67 +1,74 @@
 import React, { Component } from 'react'
 import JSONEditor from 'jsoneditor'
 require('jsoneditor/dist/jsoneditor.min.css')
+require('./jsonData.less')
 // require('jsoneditor/dist/img/jsoneditor-icons.svg')
 class JSONData extends Component {
     constructor (props) {
         super(props)
+        this.editor = undefined // json编辑器
         this.state = {
-            jsonAfter: '', // 转化后的json字符串
-            jsonBefore: '' // 转化前的json字符串
+        }
+    }
+
+    handleChartDataChange (json) {
+        console.log('jsonData.js handleChartDataChange', json)
+        let jsonObj = {}
+        try {
+            jsonObj = JSON.parse(json)
+            this.props.handleChartDataChange(jsonObj)
+        } catch (error) {
+            console.error(error)
+            throw new Error(error.toString())
         }
     }
 
     componentWillMount () {}
 
     componentDidMount () {
-        let container = document.getElementById('jsoneditor')
-        let options = {}
-        let editor = new JSONEditor(container, options)
+       this.initEditor()
+    }
 
-        // set json
-        let json = {
-            "Array": [1, 2, 3],
-            "Boolean": true,
-            "Null": null,
-            "Number": 123,
-            "Object": {"a": 1, "b": "lala"},
-            "String": "Hello World"
+    componentDidUpdate () {
+        console.log('jsonData.js componentDidUpdate')
+        this.initEditor()
+    }
+
+    initEditor () {
+        if (!this.editor || typeof this.editor !== 'object') {
+            let container = document.getElementById('jsoneditor')
+            let options = {
+                mode: 'code', // tree(default),'view' => 只读, 'form' => key只读，value可变, 'code' => 以字符串显示，并且有关键字颜色变化, 'text' => 以字符串显示
+                // onChangeJSON: (json) => this.props.handleChartDataChange(json), // 只能在tree,form, view时使用
+                onChangeText: (json) => this.handleChartDataChange(json)
+            }
+            this.editor = new JSONEditor(container, options)
         }
-        editor.set(json)
+        // set json
+        let data = []
+        if (this.props.chartData && this.props.chartData.length > 0) {
+            data = this.props.chartData
+        } else {
+            data = []
+        }
+        this.editor.set(data)
 
-        let json2 = editor.get()
-        console.log('json2', json2 )
     }
 
     componentWillUpdate(nextProps, nextState) {}
-
-    componentDidUpdate (prevProps, prevState) {}
 
     componentWillUnmount () {}
     /*
     // react生命周期中没有这个函数
     componentDidUnmount () {}
     */
-    jsonBeforeChange (e) {
-        this.setState({
-            jsonBefore: e.target.value,
-        })
-        try {
-            if (typeof JSON.parse(e.target.value) === 'object') {
-                this.setState({jsonAfter: FormatJson(e.target.value)})
-            }
-        } catch (error) {
-            throw new Error('不能转化成json')
-        }
-
-    }
 
     render () {
         return (
             <div className="json-data">
-                <div className="title">
-                    数据
-                </div>
+                {/*<div className="title">*/}
+                    {/*数据*/}
+                {/*</div>*/}
                 <div className="content">
                     <div id="jsoneditor">
 
